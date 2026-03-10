@@ -3,8 +3,33 @@ import Works from "../components/Works"; // Import the new Bento Gallery
 import SliderSection from "../components/SliderSection";
 import StatsSection from "../components/StatsSection";
 import { motion } from "framer-motion";
+import ServiceSection from "../components/ServiceSection";
 
 const Home = () => {
+  //1. services
+  const services = [
+    {
+      title: "Wedding",
+      image:
+        "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200",
+      link: "/wedding",
+      reverse: false,
+    },
+    {
+      title: "Melse",
+      image:
+        "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1200",
+      link: "/melse",
+      reverse: true,
+    },
+    {
+      title: "Birthday",
+      image:
+        "https://images.unsplash.com/photo-1464349153735-7db50ed83c84?q=80&w=1200",
+      link: "/birthday",
+      reverse: false,
+    },
+  ];
   // 2. Team Members Data
   const teamMembers = [
     {
@@ -41,9 +66,18 @@ const Home = () => {
     >
       <Hero />
 
-      {/* REPLACED ServiceSection loop with the Works Bento Grid.
-          This gives a much more modern, gallery-focused look.
-      */}
+      {/* Services Loop */}
+      <section id="work" className="pt-20">
+        {services.map((service, index) => (
+          <ServiceSection
+            key={index}
+            title={service.title}
+            image={service.image}
+            link={service.link}
+            reverse={service.reverse}
+          />
+        ))}
+      </section>
       <section id="work">
         <Works />
       </section>
