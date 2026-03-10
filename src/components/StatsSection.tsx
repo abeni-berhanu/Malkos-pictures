@@ -7,13 +7,17 @@ import {
 } from "framer-motion";
 import { useEffect, useRef } from "react";
 
-// Reusable Counter Component
-// Updated Counter Component
 const Counter = ({ value, title }: { value: number; title: string }) => {
   const count = useMotionValue(0);
-  const rounded = useTransform(count, (latest) => Math.round(latest));
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
+
+  const displayValue = useTransform(count, (latest): string => {
+    const rounded = Math.round(latest);
+    if (rounded >= 1000000) return (rounded / 1000000).toFixed(0) + "M";
+    if (rounded >= 1000) return (rounded / 1000).toFixed(0) + "K";
+    return rounded.toString();
+  });
 
   useEffect(() => {
     if (inView) {
@@ -24,17 +28,15 @@ const Counter = ({ value, title }: { value: number; title: string }) => {
   return (
     <div ref={ref} className="text-center">
       <h3 className="text-4xl md:text-5xl font-black text-malkos-orange italic flex justify-center items-center">
-        {/* Use motion.span here to display the MotionValue */}
-        <motion.span>{rounded}</motion.span>
+        <motion.span>{displayValue}</motion.span>
         <span>+</span>
       </h3>
-      <p className="text-gray-500 text-xs uppercase tracking-widest mt-2">
+      <p className="text-gray-500 text-[10px] uppercase tracking-[0.2em] mt-2 font-bold">
         {title}
       </p>
     </div>
   );
 };
-
 const StatsSection = () => {
   return (
     <section className="relative py-32 bg-malkos-dark overflow-hidden border-t border-white/5">
@@ -47,8 +49,8 @@ const StatsSection = () => {
         {/* Animated Counter Row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-24 border-b border-white/5 pb-16">
           <Counter value={10} title="Years Experience" />
+          <Counter value={3000000} title="Photos Taken" />
           <Counter value={50} title="Weddings Shot" />
-          <Counter value={200} title="Happy Clients" />
           <Counter value={15} title="Awards Won" />
         </div>
 
