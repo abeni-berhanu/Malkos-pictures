@@ -1,14 +1,22 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
+// 1. Update the interface to include description
 interface ServiceProps {
   title: string;
   image: string;
-  reverse?: boolean;
   link: string;
+  reverse: boolean;
+  description?: string; // Adding this as optional (?) or required
 }
 
-const ServiceSection = ({ title, image, reverse, link }: ServiceProps) => {
+const ServiceSection = ({
+  title,
+  image,
+  link,
+  reverse,
+  description,
+}: ServiceProps) => {
   return (
     <div className="py-16 overflow-hidden">
       <motion.div
@@ -28,13 +36,11 @@ const ServiceSection = ({ title, image, reverse, link }: ServiceProps) => {
               alt={title}
               className="w-full h-[480px] object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
             />
-            {/* Restored Sleek Border */}
             <div className="absolute inset-0 border-[1px] border-white/10 m-3 pointer-events-none z-10" />
-            <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
           </div>
         </div>
 
-        {/* Text Content - FIXED BUTTON & TEXT ALIGNMENT */}
+        {/* Text Content */}
         <div
           className={`w-full md:w-[55%] flex flex-col ${
             reverse
@@ -44,19 +50,18 @@ const ServiceSection = ({ title, image, reverse, link }: ServiceProps) => {
         >
           <div className="space-y-4">
             <p className="text-malkos-orange tracking-[0.4em] uppercase text-[10px] font-black">
-              Service 01
+              Professional Service
             </p>
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-[0.85] text-white">
               {title}
             </h2>
           </div>
 
-          <p className="text-gray-500 tracking-[0.2em] uppercase text-[11px] font-medium max-w-md">
-            Professional Photography & Cinematography tailored for high-end
-            narratives.
+          {/* 2. Display the description here */}
+          <p className="text-gray-400 tracking-[0.1em] text-sm font-medium max-w-md">
+            {description}
           </p>
 
-          {/* Button Container with explicit alignment */}
           <div
             className={`flex w-full ${reverse ? "justify-center md:justify-end" : "justify-center md:justify-start"}`}
           >

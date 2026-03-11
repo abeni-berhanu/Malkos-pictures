@@ -1,5 +1,19 @@
 import { motion } from "framer-motion";
+const scrollToSection = (id: string) => {
+  const element = document.getElementById(id);
+  if (element) {
+    const offset = 80; // Account for navbar height
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = element.getBoundingClientRect().top;
+    const elementPosition = elementRect - bodyRect;
+    const offsetPosition = elementPosition - offset;
 
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
+  }
+};
 const Hero = () => {
   return (
     <section className="relative h-[75vh] w-full flex items-center justify-start overflow-hidden bg-malkos-dark">
@@ -43,12 +57,18 @@ const Hero = () => {
           className="mt-10 flex flex-row items-center gap-4"
         >
           {/* About Button (Outline) */}
-          <button className="border border-malkos-orange text-malkos-orange px-8 md:px-10 py-2.5 uppercase text-[9px] tracking-widest font-bold transition-all duration-300 hover:bg-white hover:border-malkos-orange hover:text-black hover:shadow-[0_0_25px_rgba(255,77,0,0.5)]">
+          <button
+            onClick={() => scrollToSection("about")}
+            className="border border-malkos-orange text-malkos-orange px-8 md:px-10 py-2.5 uppercase text-[9px] tracking-widest font-bold transition-all duration-300 hover:bg-white hover:border-malkos-orange hover:text-black hover:shadow-[0_0_25px_rgba(255,77,0,0.5)]"
+          >
             About
           </button>
 
           {/* Book Now Button (Solid) */}
-          <button className="bg-malkos-orange border border-malkos-orange text-white px-8 md:px-10 py-2.5 uppercase text-[9px] tracking-widest font-bold transition-all duration-300 hover:bg-white hover:border-malkos-orange hover:text-black hover:shadow-[0_0_25px_rgba(255,77,0,0.5)]">
+          <button
+            onClick={() => scrollToSection("contact")}
+            className="bg-malkos-orange border border-malkos-orange text-white px-8 md:px-10 py-2.5 uppercase text-[9px] tracking-widest font-bold transition-all duration-300 hover:bg-white hover:border-malkos-orange hover:text-black hover:shadow-[0_0_25px_rgba(255,77,0,0.5)]"
+          >
             Book Now
           </button>
         </motion.div>

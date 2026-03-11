@@ -9,7 +9,7 @@ import "swiper/css/navigation";
 
 interface SliderItem {
   id: number;
-  img: string;
+  image: string; // Changed from 'img' to 'image' to match config
   name: string;
   role?: string;
 }
@@ -34,7 +34,7 @@ const SliderSection = ({ title, subtitle, items }: SliderProps) => {
           <p className="text-malkos-orange text-xs uppercase tracking-[0.5em] mb-3 font-bold">
             {subtitle}
           </p>
-          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter">
+          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-white">
             {title}
           </h2>
           <div className="h-[1px] w-16 bg-malkos-orange mx-auto mt-6" />
@@ -69,7 +69,7 @@ const SliderSection = ({ title, subtitle, items }: SliderProps) => {
               >
                 <div className="relative aspect-[3/4] overflow-hidden bg-malkos-card">
                   <img
-                    src={item.img}
+                    src={item.image} // Changed from item.img to item.image
                     alt={item.name}
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
                   />
@@ -78,7 +78,7 @@ const SliderSection = ({ title, subtitle, items }: SliderProps) => {
                 </div>
 
                 <div className="mt-8 text-center md:text-left">
-                  <h3 className="text-xl font-bold uppercase tracking-tight group-hover:text-malkos-orange transition-colors duration-300">
+                  <h3 className="text-xl font-bold uppercase tracking-tight text-white group-hover:text-malkos-orange transition-colors duration-300">
                     {item.name}
                   </h3>
                   {item.role && (
