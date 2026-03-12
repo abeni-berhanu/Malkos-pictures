@@ -3,39 +3,44 @@ import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MALKOS_CONFIG } from "../data/config";
 
-// Component Imports
+// Section Components
 import Hero from "../components/Hero";
 import Works from "../components/Works";
 import SliderSection from "../components/SliderSection";
 import StatsSection from "../components/StatsSection";
 import ServiceSection from "../components/ServiceSection";
 
+/**
+ * Home Page
+ * Primary landing page controller. Handles cross-page scroll orchestration
+ * and section-based layout rendering.
+ */
 const Home = () => {
   const location = useLocation();
 
+  // --- NAVIGATION ORCHESTRATION ---
   useEffect(() => {
-    // 1. Check if we arrived here with a "scrollTo" instruction in the state
-    if (location.state?.scrollTo) {
-      const sectionId = location.state.scrollTo;
+    const scrollToTarget = location.state?.scrollTo;
 
-      // 2. Small timeout to ensure the DOM is fully rendered before calculating position
+    if (scrollToTarget) {
+      // Delay allows for full DOM paint and asset layout calculations
       const timer = setTimeout(() => {
-        const element = document.getElementById(sectionId);
+        const element = document.getElementById(scrollToTarget);
+
         if (element) {
-          const offset = 80; // Navbar height offset
+          const NAVBAR_OFFSET = 80;
           const bodyRect = document.body.getBoundingClientRect().top;
           const elementRect = element.getBoundingClientRect().top;
-          const elementPosition = elementRect - bodyRect;
-          const offsetPosition = elementPosition - offset;
+          const scrollPosition = elementRect - bodyRect - NAVBAR_OFFSET;
 
           window.scrollTo({
-            top: offsetPosition,
+            top: scrollPosition,
             behavior: "smooth",
           });
         }
-      }, 150); // 150ms delay for smooth transition
+      }, 150);
 
-      // 3. Cleanup: Wipe the state so refreshing the page doesn't trigger the scroll again
+      // Reset history state to prevent re-triggering scroll on manual refresh
       window.history.replaceState({}, document.title);
 
       return () => clearTimeout(timer);
@@ -48,12 +53,12 @@ const Home = () => {
       animate={{ opacity: 1 }}
       className="bg-malkos-dark"
     >
-      {/* 1. Hero Section - Target for "Home" */}
+      {/* 01. Hero / Splash */}
       <section id="home">
         <Hero />
       </section>
 
-      {/* 2. Services Section */}
+      {/* 02. Service Offerings */}
       <section id="services" className="pt-20">
         {MALKOS_CONFIG.services.map((service) => (
           <ServiceSection
@@ -67,12 +72,12 @@ const Home = () => {
         ))}
       </section>
 
-      {/* 3. Bento Gallery / Popular Works - Target for "Gallery" */}
+      {/* 03. Curated Works Portfolio */}
       <section id="gallery">
         <Works />
       </section>
 
-      {/* 4. Team Slider - Target for "Team" */}
+      {/* 04. Creative Personnel */}
       <section id="team">
         <SliderSection
           title="Meet our Team"
@@ -81,14 +86,13 @@ const Home = () => {
         />
       </section>
 
-      {/* 5. Stats Counter - Target for "About" */}
+      {/* 05. Studio Legacy & Metrics */}
       <section id="about">
         <StatsSection />
       </section>
 
-      {/* 6. Contact Section - Added ID to ensure the Navbar "Contact" link works */}
+      {/* 06. Global Footer / Lead Capture */}
       <section id="contact">
-        {/* If you have a Footer component that contains the contact form, place it here */}
         <div className="py-10 border-t border-white/5 bg-malkos-dark" />
       </section>
     </motion.div>

@@ -7,13 +7,19 @@ import {
   Send as TelegramIcon,
 } from "lucide-react";
 
-// Define the TikTok SVG as a component
+/**
+ * Custom Brand Icons
+ */
 const TikTokIcon = ({ size }: { size: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
     <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z" />
   </svg>
 );
 
+/**
+ * MALKOS Global Configuration
+ * Central source of truth for brand assets, contact info, and section content.
+ */
 export const MALKOS_CONFIG = {
   brand: {
     name: "MALKOS",
@@ -43,12 +49,10 @@ export const MALKOS_CONFIG = {
     { icon: TikTokIcon, href: "#", label: "Tiktok" },
   ],
 
-  // 1. SERVICES DATA (Migrated from Home.tsx)
   services: [
     {
       title: "Wedding",
       image: "/gallery/wedding/img-02.jpg",
-
       reverse: false,
       description:
         "Professional wedding photography capturing your most precious moments.",
@@ -56,7 +60,6 @@ export const MALKOS_CONFIG = {
     {
       title: "Melse",
       image: "/gallery/melse/img-02.jpg",
-
       reverse: true,
       description:
         "Capturing the rich traditions of the Melse ceremony with artistic precision.",
@@ -64,13 +67,11 @@ export const MALKOS_CONFIG = {
     {
       title: "Birthday",
       image: "/gallery/birthday/img-03.jpg",
-
       reverse: false,
       description: "Vibrant and joyful birthday photography for all ages.",
     },
   ],
 
-  //popular works
   popularWorks: [
     {
       id: 1,
@@ -81,7 +82,7 @@ export const MALKOS_CONFIG = {
     },
     {
       id: 2,
-      title: "Our Golden Heritage - Melse",
+      title: "Our Golden Heritage",
       category: "Melse",
       image: "/gallery/melse/img-02.jpg",
       gridClass: "md:col-span-4 md:row-span-1",
@@ -91,7 +92,6 @@ export const MALKOS_CONFIG = {
       title: "The Modern Muse",
       category: "Portrait",
       image: "/gallery/wedding/img-03.jpg",
-
       gridClass: "md:col-span-4 md:row-span-1",
     },
     {
@@ -99,7 +99,6 @@ export const MALKOS_CONFIG = {
       title: "Memorable Birthdays",
       category: "Birthday",
       image: "/gallery/birthday/img-01.jpg",
-
       gridClass: "md:col-span-12 md:row-span-1",
     },
   ],
@@ -111,7 +110,6 @@ export const MALKOS_CONFIG = {
     { value: 6, title: "Awards Won" },
   ],
 
-  // 2. TEAM MEMBERS DATA (Migrated from Home.tsx)
   team: [
     {
       id: 1,

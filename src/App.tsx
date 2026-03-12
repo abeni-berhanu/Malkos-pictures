@@ -1,31 +1,36 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+// Component Imports
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+
+// Page Imports
 import Home from "./pages/Home";
 import GalleryPage from "./pages/GalleryPage";
 
-// Placeholder pages for your routes
-const About = () => (
-  <div className="pt-32 text-center h-screen">About Page Coming Soon</div>
-);
-const Team = () => (
-  <div className="pt-32 text-center h-screen">Team Page Coming Soon</div>
-);
-const Contact = () => (
-  <div className="pt-32 text-center h-screen">Contact Page Coming Soon</div>
-);
-
+/**
+ * Root Application Component
+ * Handles global layout structure, navigation providers, and
+ * primary route definitions.
+ */
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-malkos-dark flex flex-col">
+      <div className="min-h-screen bg-[#0A0A0A] flex flex-col selection:bg-malkos-orange selection:text-white">
+        {/* Global Navigation Overlay */}
         <Navbar />
+
+        {/* Primary Content Area */}
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/gallery" element={<GalleryPage />} />
+
+            {/* Fallback for undefined routes could be added here */}
           </Routes>
         </main>
+
+        {/* Global Footer & Contact Information */}
         <Footer />
       </div>
     </Router>

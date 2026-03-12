@@ -1,21 +1,25 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { MALKOS_CONFIG } from "../data/config";
 
+/**
+ * Navbar Component
+ * High-level navigation controller for route transitions and
+ * section-based scrolling.
+ */
 const Navbar = () => {
+  // --- STATE ---
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // --- ROUTING ---
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Navigation Links Definition
-  // 'isPage: true' means it's a separate route (/gallery)
-  // 'isPage: false' means it's an ID on the home page (#team)
   const navLinks = [
     { name: "Home", id: "home", isPage: false },
     { name: "About", id: "about", isPage: false },
@@ -24,38 +28,36 @@ const Navbar = () => {
     { name: "Contact", id: "contact", isPage: false },
   ];
 
-  // --- SMART NAVIGATION LOGIC ---
-  const handleNavigation = (id: string, isPage: boolean) => {
-    setIsMobileMenuOpen(false);
+  // --- NAVIGATION UTILITIES ---
+  const handleNavigation = useCallback(
+    (id: string, isPage: boolean) => {
+      setIsMobileMenuOpen(false);
 
-    if (isPage) {
-      // 1. If it's a separate page (Gallery)
-      navigate(id);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      // 2. If it's a section anchor (Home, About, Team, etc.)
-      if (location.pathname === "/") {
-        // We are already home - scroll to ID
-        const element = document.getElementById(id);
-        if (element) {
-          const offset = 80;
-          const bodyRect = document.body.getBoundingClientRect().top;
-          const elementRect = element.getBoundingClientRect().top;
-          const elementPosition = elementRect - bodyRect;
-          const offsetPosition = elementPosition - offset;
-
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: "smooth",
-          });
-        }
+      if (isPage) {
+        navigate(id);
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
-        // We are on Gallery page - Go home first, then scroll
-        navigate("/", { state: { scrollTo: id } });
-      }
-    }
-  };
+        if (location.pathname === "/") {
+          const element = document.getElementById(id);
+          if (element) {
+            const offset = 80;
+            const elementPosition =
+              element.getBoundingClientRect().top + window.scrollY;
 
+            window.scrollTo({
+              top: elementPosition - offset,
+              behavior: "smooth",
+            });
+          }
+        } else {
+          navigate("/", { state: { scrollTo: id } });
+        }
+      }
+    },
+    [location.pathname, navigate],
+  );
+
+  // --- SIDE EFFECTS ---
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -78,9 +80,9 @@ const Navbar = () => {
   }, [lastScrollY]);
 
   useEffect(() => {
-    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "auto";
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
     return () => {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = "";
     };
   }, [isMobileMenuOpen]);
 
@@ -89,7 +91,7 @@ const Navbar = () => {
       <nav
         className={`fixed w-full z-[60] transition-all duration-500 ease-in-out ${
           isScrolled
-            ? "bg-malkos-dark/95 backdrop-blur-md shadow-xl"
+            ? "bg-[#0A0A0A]/95 backdrop-blur-md shadow-xl"
             : "bg-transparent"
         } ${
           isVisible || isMobileMenuOpen
@@ -97,7 +99,7 @@ const Navbar = () => {
             : "-translate-y-full opacity-0"
         }`}
       >
-        {/* 1. SOCIALS & DIVIDER */}
+        {/* Header Decoration */}
         <div className="max-w-7xl mx-auto px-6">
           <div className="pt-5 pb-3 flex justify-center items-center space-x-7 text-malkos-orange">
             {MALKOS_CONFIG.socials.map((social, index) => {
@@ -108,7 +110,7 @@ const Navbar = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-white transition-colors"
+                  className="hover:text-white transition-colors duration-300"
                 >
                   <Icon size={14} />
                 </a>
@@ -116,31 +118,30 @@ const Navbar = () => {
             })}
           </div>
           <div className="w-full flex justify-center">
-            <div className="w-3/4 h-[1px] bg-white/20" />
+            <div className="w-3/4 h-[1px] bg-white/10" />
           </div>
         </div>
 
-        {/* 2. MAIN NAV */}
+        {/* Desktop Interface */}
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <button
             onClick={() => handleNavigation("home", false)}
-            className="flex items-center group"
+            className="flex items-center"
           >
             <img
               src="/logo.png"
-              alt="Malkos Logo"
-              className="h-10 md:h-13 w-auto object-contain"
+              alt="Malkos"
+              className="h-10 md:h-12 w-auto object-contain"
             />
           </button>
 
-          {/* Desktop Links */}
           <div className="hidden md:flex items-center space-x-8">
             <div className="flex items-center space-x-6">
               {navLinks.map((link) => (
                 <button
                   key={link.name}
                   onClick={() => handleNavigation(link.id, link.isPage)}
-                  className={`text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-300 relative py-1 ${
+                  className={`text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-300 py-1 ${
                     location.pathname === link.id
                       ? "text-malkos-orange"
                       : "text-white/70 hover:text-malkos-orange"
@@ -168,7 +169,7 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* 3. MOBILE MENU OVERLAY */}
+      {/* Mobile Menu Layer */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -180,7 +181,7 @@ const Navbar = () => {
               duration: 0.5,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="fixed inset-0 bg-malkos-dark flex flex-col items-center justify-center z-[55] md:hidden"
+            className="fixed inset-0 bg-[#0A0A0A] flex flex-col items-center justify-center z-[55] md:hidden"
           >
             <div className="flex flex-col items-center space-y-8">
               {navLinks.map((link) => (

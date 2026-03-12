@@ -1,21 +1,26 @@
 @import "tailwindcss";
 
+/**
+ * MALKOS DESIGN SYSTEM (Tailwind v4 Theme)
+ */
 @theme {
-  /* Malkos Brand Colors */
+  /* Brand Identity */
   --color-malkos-orange: #ff4d00;
   --color-malkos-dark: #050505;
   --color-malkos-card: #0f0f0f;
 
-  /* Modern Typography */
+  /* Typography */
   --font-sans: "Inter", system-ui, sans-serif;
 
-  /* Custom Transitions */
+  /* Animation Curves */
   --transition-malkos: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Base Styles */
+/**
+ * 01. BASE STYLES
+ */
 :root {
-  background-color: #050505;
+  background-color: var(--color-malkos-dark);
   color: #ffffff;
   color-scheme: dark;
 }
@@ -34,32 +39,37 @@ body {
   overflow-x: hidden;
 }
 
-/* Custom Scrollbar for a Premium Look */
+/**
+ * 02. BROWSER INTERFACE (Scrollbar)
+ */
 ::-webkit-scrollbar {
   width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: var(--color-malkos-dark);
 }
 
 ::-webkit-scrollbar-thumb {
   background: #222;
   border-radius: 10px;
+  transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff4d00;
+  background: var(--color-malkos-orange);
 }
 
-/* Swiper.js Customizations */
+/**
+ * 03. SWIPER.JS OVERRIDES
+ */
 .swiper-pagination-bullet {
   background: rgba(255, 255, 255, 0.3) !important;
   opacity: 1 !important;
 }
 
 .swiper-pagination-bullet-active {
-  background: #ff4d00 !important;
+  background: var(--color-malkos-orange) !important;
   width: 24px !important;
   border-radius: 4px !important;
   transition: width 0.3s ease !important;
@@ -67,14 +77,28 @@ body {
 
 .swiper-button-next,
 .swiper-button-prev {
-  color: #ff4d00 !important;
+  color: var(--color-malkos-orange) !important;
   transform: scale(0.7);
+  transition: transform 0.3s ease;
 }
 
-/* Glassmorphism Utility */
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  transform: scale(0.85);
+}
+
+/**
+ * 04. UTILITY CLASSES
+ */
 .glass {
   background: rgba(15, 15, 15, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Prevents layout shift during framer-motion transitions */
+.will-change-layout {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }

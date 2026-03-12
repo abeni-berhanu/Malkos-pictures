@@ -6,10 +6,14 @@ interface ServiceProps {
   image: string;
   reverse: boolean;
   description?: string;
-  // We add a category prop to tell the gallery what to filter
   category?: string;
 }
 
+/**
+ * ServiceSection Component
+ * Showcases individual studio services with alternating layouts.
+ * Visuals are full-color on mobile and switch to hover-activated grayscale on desktop.
+ */
 const ServiceSection = ({
   title,
   image,
@@ -30,12 +34,16 @@ const ServiceSection = ({
       >
         {/* Image Container */}
         <div className="w-full md:w-[45%]">
-          <div className="relative group overflow-hidden shadow-2xl">
+          <div className="relative group overflow-hidden shadow-2xl border border-white/5">
             <img
               src={image}
               alt={title}
-              className="w-full h-[480px] object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
+              /* Logic: md:grayscale applies only on medium screens and up.
+                 Mobile remains group-hover:grayscale-0 (which has no effect since it's already color).
+              */
+              className="w-full h-[480px] object-cover md:grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
             />
+
             {/* Aesthetic Frame Overlay */}
             <div className="absolute inset-0 border-[1px] border-white/10 m-3 pointer-events-none z-10" />
           </div>
@@ -62,6 +70,7 @@ const ServiceSection = ({
             {description}
           </p>
 
+          {/* Navigation Link */}
           <div
             className={`flex w-full ${
               reverse
@@ -70,13 +79,14 @@ const ServiceSection = ({
             }`}
           >
             <Link
-              to="/gallery" // Always point to the main gallery page
-              state={{ filter: category }} // This is the "secret" message passed to the gallery
+              to="/gallery"
+              state={{ filter: category }}
               className="group relative inline-flex items-center justify-center border border-malkos-orange text-malkos-orange px-12 py-4 overflow-hidden transition-all duration-300"
             >
               <span className="relative z-10 uppercase text-[10px] tracking-[0.4em] font-bold group-hover:text-white transition-colors duration-300">
                 Explore {title}
               </span>
+
               {/* Animated Background Fill */}
               <div className="absolute inset-0 bg-malkos-orange translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             </Link>

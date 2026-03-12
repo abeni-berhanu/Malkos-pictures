@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import {
   motion,
   useMotionValue,
@@ -5,14 +6,19 @@ import {
   animate,
   useInView,
 } from "framer-motion";
-import { useEffect, useRef } from "react";
-import { MALKOS_CONFIG } from "../data/config"; // Import the config
+import { MALKOS_CONFIG } from "../data/config";
 
+/**
+ * Counter Component
+ * Internal utility to handle high-performance numeric animations
+ * using Framer Motion's useMotionValue.
+ */
 const Counter = ({ value, title }: { value: number; title: string }) => {
   const count = useMotionValue(0);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
 
+  // Transforms the raw number into a formatted string (K/M shorthand)
   const displayValue = useTransform(count, (latest): string => {
     const rounded = Math.round(latest);
     if (rounded >= 1000000) return (rounded / 1000000).toFixed(0) + "M";
@@ -39,23 +45,28 @@ const Counter = ({ value, title }: { value: number; title: string }) => {
   );
 };
 
+/**
+ * StatsSection Component
+ * Displays brand achievements and mission statement with
+ * an editorial-style "drop cap" layout.
+ */
 const StatsSection = () => {
   return (
-    <section className="relative py-32 bg-malkos-dark overflow-hidden border-t border-white/5">
-      {/* Background visual element */}
+    <section className="relative py-32 bg-[#0A0A0A] overflow-hidden border-t border-white/5">
+      {/* Background Brand Watermark */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15vw] font-black text-white/[0.02] pointer-events-none select-none uppercase">
         {MALKOS_CONFIG.brand.name}
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
-        {/* Animated Counter Row - Now Dynamic */}
+        {/* Metric Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-24 border-b border-white/5 pb-16">
           {MALKOS_CONFIG.stats.map((stat, index) => (
             <Counter key={index} value={stat.value} title={stat.title} />
           ))}
         </div>
 
-        {/* Text Content with Drop Caps */}
+        {/* Narrative Content */}
         <div className="grid md:grid-cols-2 gap-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

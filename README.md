@@ -1,73 +1,62 @@
-# React + TypeScript + Vite
+# 📸 MALKOS | Professional Artistry Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A high-performance, cinematic photography portfolio for **MALKOS**. This platform is built with a data-driven architecture, ensuring that content updates are seamless and decoupled from the UI logic.
 
-Currently, two official plugins are available:
+## 🛠 Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Core:** React 18 (TypeScript) + Vite
+- **Styling:** Tailwind CSS v4
+- **Animation:** Framer Motion
+- **Interactive:** Swiper.js (Carousels), Lucide React (Icons)
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🏗 Project Structure
 
-## Expanding the ESLint configuration
+- **`public/gallery/`**: Organized subfolders (`wedding`, `melse`, etc.) for all image assets.
+- **`src/components/`**: Modular UI sections like the Bento `Works.tsx` and `SliderSection.tsx`.
+- **`src/data/`**: The "Source of Truth" containing `config.tsx` and `galleryData.tsx`.
+- **`src/pages/`**: Main view controllers for the landing page and filterable gallery.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+## ⚙️ Content Management
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Updates are handled centrally in the `src/data/` directory. **No coding knowledge is required to update the content.**
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+### 1. Studio Info (`config.tsx`)
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Modify brand taglines, contact details, social links, and the team member array.
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+### 2. Portfolio Gallery (`galleryData.tsx`)
 
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+To add new work:
+
+1. Drop the image into the corresponding `public/gallery/` folder.
+2. Add a new entry to `GALLERY_ITEMS` with a unique ID and category.
+
+---
+
+## 🎨 Design System
+
+### Adaptive Media
+
+- **Desktop:** Images use a cinematic grayscale-to-color transition on hover.
+- **Mobile:** Images appear in full color by default to ensure visual vibrancy on touch devices.
+
+### Smart Navigation
+
+- **Bento Logic:** The gallery uses a dynamic `grid-flow-dense` pattern for a rhythmic layout.
+- **Scroll Orchestration:** Cross-page navigation (e.g., Gallery → Home #Team) includes automatic offsets for the fixed Navbar.
+
+---
+
+## 🚀 Deployment
+
+1. **Install:** `npm install`
+2. **Dev:** `npm run dev`
+3. **Build:** `npm run build`
+
+---
+
+_Created for MALKOS Pictures — Elevating memories through professional artistry._
