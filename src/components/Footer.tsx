@@ -1,8 +1,15 @@
-import { Mail, MapPin, Phone, Send } from "lucide-react";
+import React, { useState, useRef } from "react"; // Added hooks
+import { Mail, MapPin, Phone, Send, CheckCircle2 } from "lucide-react";
 import { MALKOS_CONFIG } from "../data/config";
+import emailjs from "@emailjs/browser"; // Make sure to npm install @emailjs/browser
+import { motion, AnimatePresence } from "framer-motion";
 
 const Footer = () => {
-  // Hardcoded Navigation - Matching Navbar IDs
+  const formRef = useRef<HTMLFormElement>(null);
+  const [status, setStatus] = useState<
+    "idle" | "sending" | "success" | "error"
+  >("idle");
+
   const exploreLinks = [
     { name: "Home", id: "home" },
     { name: "About Studio", id: "about" },
@@ -10,11 +17,10 @@ const Footer = () => {
     { name: "Gallery", id: "gallery" },
   ];
 
-  // Reusable Scroll Logic
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      const offset = 80; // Space for the fixed navbar
+      const offset = 80;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
@@ -27,13 +33,40 @@ const Footer = () => {
     }
   };
 
+  // --- SUBMISSION LOGIC ---
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formRef.current) return;
+
+    setStatus("sending");
+
+    emailjs
+      .sendForm(
+        "YOUR_SERVICE_ID", // Replace with your Service ID
+        "YOUR_TEMPLATE_ID", // Replace with your Template ID
+        formRef.current,
+        "YOUR_PUBLIC_KEY", // Replace with your Public Key
+      )
+      .then(() => {
+        setStatus("success");
+        formRef.current?.reset();
+        // Reset back to idle after 5 seconds to show form again
+        setTimeout(() => setStatus("idle"), 5000);
+      })
+      .catch((error: any) => {
+        // Adding : any explicitly satisfies the compiler
+        console.error("Email Error:", error);
+        setStatus("error");
+      });
+  };
+
   return (
     <footer
       id="contact"
       className="bg-[#0A0A0A] pt-24 pb-12 border-t border-white/5"
     >
       <div className="max-w-7xl mx-auto px-6">
-        {/* --- SIMPLE CONTACT FORM SECTION (Newsletter Style) --- */}
+        {/* --- CONTACT FORM SECTION --- */}
         <div className="text-center max-w-3xl mx-auto mb-24">
           <p className="text-malkos-orange text-[10px] uppercase tracking-[0.5em] mb-4 font-bold">
             Get In Touch
@@ -41,41 +74,82 @@ const Footer = () => {
           <h2 className="text-3xl font-black uppercase tracking-tighter mb-4 text-white">
             Let's capture the vision.
           </h2>
-          <p className="text-gray-500 text-[10px] md:text-xs uppercase tracking-[0.2em] mb-10 max-w-xl mx-auto leading-relaxed">
-            Tell us about the service you're looking for and any special
-            requests.
-          </p>
 
-          <form
-            className="flex flex-col gap-4"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <div className="flex flex-col sm:flex-row gap-4">
-              <input
-                type="text"
-                placeholder="YOUR NAME"
-                className="flex-1 bg-transparent border border-white/10 px-6 py-4 focus:border-malkos-orange outline-none transition-colors text-xs tracking-widest text-white uppercase"
-              />
-              <input
-                type="email"
-                placeholder="YOUR EMAIL"
-                className="flex-1 bg-transparent border border-white/10 px-6 py-4 focus:border-malkos-orange outline-none transition-colors text-xs tracking-widest text-white uppercase"
-              />
-            </div>
-            <div className="flex flex-col sm:flex-row gap-0">
-              <input
-                type="text"
-                placeholder="YOUR MESSAGE"
-                className="flex-grow bg-transparent border border-white/10 px-6 py-4 focus:border-malkos-orange outline-none transition-colors text-xs tracking-widest text-white uppercase"
-              />
-              <button className="bg-malkos-orange text-white px-10 py-4 uppercase font-bold text-[10px] tracking-[0.2em] hover:bg-white hover:text-black transition-all flex items-center justify-center gap-2">
-                Send <Send size={12} />
-              </button>
-            </div>
-          </form>
+          <AnimatePresence mode="wait">
+            {status === "success" ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="py-10 flex flex-col items-center justify-center gap-4"
+              >
+                <CheckCircle2 className="text-malkos-orange" size={40} />
+                <p className="text-white text-xs uppercase tracking-widest font-bold">
+                  Message Sent Successfully
+                </p>
+                <p className="text-gray-500 text-[10px] uppercase">
+                  We'll get back to you shortly.
+                </p>
+              </motion.div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <p className="text-gray-500 text-[10px] md:text-xs uppercase tracking-[0.2em] mb-10 max-w-xl mx-auto leading-relaxed">
+                  Tell us about the service you're looking for and any special
+                  requests.
+                </p>
+
+                <form
+                  ref={formRef}
+                  className="flex flex-col gap-4"
+                  onSubmit={handleSubmit}
+                >
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <input
+                      required
+                      type="text"
+                      name="from_name" // Variable name for EmailJS template
+                      placeholder="YOUR NAME"
+                      className="flex-1 bg-transparent border border-white/10 px-6 py-4 focus:border-malkos-orange outline-none transition-colors text-xs tracking-widest text-white uppercase"
+                    />
+                    <input
+                      required
+                      type="email"
+                      name="from_email" // Variable name for EmailJS template
+                      placeholder="YOUR EMAIL"
+                      className="flex-1 bg-transparent border border-white/10 px-6 py-4 focus:border-malkos-orange outline-none transition-colors text-xs tracking-widest text-white"
+                    />
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-0">
+                    <input
+                      required
+                      name="message" // Variable name for EmailJS template
+                      type="text"
+                      placeholder="YOUR MESSAGE"
+                      className="flex-grow bg-transparent border border-white/10 px-6 py-4 focus:border-malkos-orange outline-none transition-colors text-xs tracking-widest text-white"
+                    />
+                    <button
+                      disabled={status === "sending"}
+                      className="bg-malkos-orange text-white px-10 py-4 uppercase font-bold text-[10px] tracking-[0.2em] hover:bg-white hover:text-black disabled:bg-gray-800 disabled:text-gray-500 transition-all flex items-center justify-center gap-2"
+                    >
+                      {status === "sending" ? "SENDING..." : "Send"}{" "}
+                      <Send size={12} />
+                    </button>
+                  </div>
+                  {status === "error" && (
+                    <p className="text-red-500 text-[8px] uppercase tracking-widest mt-2">
+                      Failed to send. Please try again.
+                    </p>
+                  )}
+                </form>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        {/* Main Footer Content Grid */}
+        {/* --- REST OF FOOTER (Links, Brand, Map) --- */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 border-t border-white/5 pt-16">
           {/* Column 1: Brand Info */}
           <div className="space-y-8">
@@ -103,7 +177,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Column 2: Quick Links (Now with Scroll Logic) */}
+          {/* Column 2: Quick Links */}
           <div>
             <h4 className="text-[10px] uppercase tracking-[0.3em] font-bold mb-8 text-white">
               Explore

@@ -15,7 +15,7 @@ const GalleryPage = () => {
     if (location.state?.filter) setFilter(location.state.filter);
   }, [location.state]);
 
-  const categories = ["all", "wedding", "melse", "portrait"];
+  const categories = ["all", "wedding", "melse", "birthday", "portrait"];
   const filteredImages =
     filter === "all"
       ? GALLERY_ITEMS

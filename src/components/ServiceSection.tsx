@@ -15,7 +15,7 @@ const ServiceSection = ({
   image,
   reverse,
   description,
-  category, // Use this to pass "wedding" or "melse"
+  category,
 }: ServiceProps) => {
   return (
     <div className="py-16 overflow-hidden">
