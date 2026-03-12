@@ -1,52 +1,12 @@
 import { motion } from "framer-motion";
-
-const works = [
-  {
-    id: 1,
-    title: "The Royal Union",
-    category: "Wedding",
-    image:
-      "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000",
-    gridClass: "md:col-span-8 md:row-span-2",
-  },
-  {
-    id: 2,
-    title: "Heritage Gold",
-    category: "Melse / Cultural",
-    image:
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1000",
-    gridClass: "md:col-span-4 md:row-span-1",
-  },
-  {
-    id: 3,
-    title: "The Modern Muse",
-    category: "Portrait",
-    image:
-      "https://images.unsplash.com/photo-1509460913899-515f1df34fea?q=80&w=1000",
-    gridClass: "md:col-span-4 md:row-span-1",
-  },
-  {
-    id: 4,
-    title: "After Hours",
-    category: "Event Cinematography",
-    image:
-      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2000",
-    gridClass: "md:col-span-12 md:row-span-1",
-  },
-];
+import { MALKOS_CONFIG } from "../data/config";
 
 const Works = () => {
   return (
     <section className="bg-malkos-dark py-16 px-6">
-      {" "}
-      {/* Reduced padding from 24 to 16 */}
       <div className="max-w-6xl mx-auto">
-        {" "}
-        {/* Narrower container for better focus */}
-        {/* EXACT SAME HEADER STYLE */}
+        {/* HEADER */}
         <div className="text-center mb-12">
-          {" "}
-          {/* Reduced bottom margin */}
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -72,10 +32,10 @@ const Works = () => {
             className="h-[3px] bg-malkos-orange mx-auto mt-4"
           />
         </div>
-        {/* COMPACT BENTO GRID */}
-        {/* Changed auto-rows from 350px to 250px for a smaller look */}
+
+        {/* BENTO GRID */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3 auto-rows-[250px]">
-          {works.map((work, index) => (
+          {MALKOS_CONFIG.popularWorks.map((work, index) => (
             <motion.div
               key={work.id}
               initial={{ opacity: 0, y: 20 }}
@@ -91,10 +51,11 @@ const Works = () => {
                   src={work.image}
                   alt={work.title}
                   className="w-full h-full object-cover brightness-75 group-hover:brightness-90 transition-all duration-700"
+                  loading="lazy"
                 />
               </div>
 
-              {/* Overlay Content (Made padding smaller) */}
+              {/* Overlay Content */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-6">
                 <span className="text-malkos-orange text-[8px] uppercase tracking-[0.2em] font-bold mb-1">
                   {work.category}

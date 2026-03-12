@@ -1,40 +1,58 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { MALKOS_CONFIG } from "../config";
+import { MALKOS_CONFIG } from "../data/config";
 
 const Navbar = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const location = useLocation();
 
-  // Define your internal section IDs here
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Navigation Links Definition
+  // 'isPage: true' means it's a separate route (/gallery)
+  // 'isPage: false' means it's an ID on the home page (#team)
   const navLinks = [
-    { name: "Home", id: "home" },
-    { name: "About", id: "about" },
-    { name: "Gallery", id: "gallery" },
-    { name: "Team", id: "team" },
-    { name: "Contact", id: "contact" },
+    { name: "Home", id: "home", isPage: false },
+    { name: "About", id: "about", isPage: false },
+    { name: "Gallery", id: "/gallery", isPage: true },
+    { name: "Team", id: "team", isPage: false },
+    { name: "Contact", id: "contact", isPage: false },
   ];
 
-  // Logic to scroll smoothly to an ID
-  const scrollToSection = (id: string) => {
+  // --- SMART NAVIGATION LOGIC ---
+  const handleNavigation = (id: string, isPage: boolean) => {
     setIsMobileMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 80; // Account for navbar height
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
+    if (isPage) {
+      // 1. If it's a separate page (Gallery)
+      navigate(id);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      // 2. If it's a section anchor (Home, About, Team, etc.)
+      if (location.pathname === "/") {
+        // We are already home - scroll to ID
+        const element = document.getElementById(id);
+        if (element) {
+          const offset = 80;
+          const bodyRect = document.body.getBoundingClientRect().top;
+          const elementRect = element.getBoundingClientRect().top;
+          const elementPosition = elementRect - bodyRect;
+          const offsetPosition = elementPosition - offset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+          });
+        }
+      } else {
+        // We are on Gallery page - Go home first, then scroll
+        navigate("/", { state: { scrollTo: id } });
+      }
     }
   };
 
@@ -105,7 +123,7 @@ const Navbar = () => {
         {/* 2. MAIN NAV */}
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <button
-            onClick={() => scrollToSection("home")}
+            onClick={() => handleNavigation("home", false)}
             className="flex items-center group"
           >
             <img
@@ -121,8 +139,12 @@ const Navbar = () => {
               {navLinks.map((link) => (
                 <button
                   key={link.name}
-                  onClick={() => scrollToSection(link.id)}
-                  className="text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-300 text-white/70 hover:text-malkos-orange relative py-1"
+                  onClick={() => handleNavigation(link.id, link.isPage)}
+                  className={`text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-300 relative py-1 ${
+                    location.pathname === link.id
+                      ? "text-malkos-orange"
+                      : "text-white/70 hover:text-malkos-orange"
+                  }`}
                 >
                   {link.name}
                 </button>
@@ -130,7 +152,7 @@ const Navbar = () => {
             </div>
 
             <button
-              onClick={() => scrollToSection("contact")}
+              onClick={() => handleNavigation("contact", false)}
               className="px-5 py-2 border border-malkos-orange text-malkos-orange text-[9px] uppercase tracking-[0.25em] font-black transition-all duration-300 hover:bg-malkos-orange hover:text-white"
             >
               Book Now
@@ -164,7 +186,7 @@ const Navbar = () => {
               {navLinks.map((link) => (
                 <button
                   key={link.name}
-                  onClick={() => scrollToSection(link.id)}
+                  onClick={() => handleNavigation(link.id, link.isPage)}
                   className="text-3xl uppercase tracking-[0.2em] font-black text-white hover:text-malkos-orange transition-colors"
                 >
                   {link.name}
@@ -172,7 +194,7 @@ const Navbar = () => {
               ))}
               <div className="pt-10">
                 <button
-                  onClick={() => scrollToSection("contact")}
+                  onClick={() => handleNavigation("contact", false)}
                   className="px-10 py-3 border border-malkos-orange text-malkos-orange text-xs uppercase tracking-[0.25em] font-black"
                 >
                   Book Now

@@ -6,7 +6,7 @@ import {
   useInView,
 } from "framer-motion";
 import { useEffect, useRef } from "react";
-import { MALKOS_CONFIG } from "../config"; // Import the config
+import { MALKOS_CONFIG } from "../data/config"; // Import the config
 
 const Counter = ({ value, title }: { value: number; title: string }) => {
   const count = useMotionValue(0);

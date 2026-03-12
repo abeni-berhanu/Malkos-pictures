@@ -1,21 +1,21 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
-// 1. Update the interface to include description
 interface ServiceProps {
   title: string;
   image: string;
-  link: string;
   reverse: boolean;
-  description?: string; // Adding this as optional (?) or required
+  description?: string;
+  // We add a category prop to tell the gallery what to filter
+  category?: string;
 }
 
 const ServiceSection = ({
   title,
   image,
-  link,
   reverse,
   description,
+  category, // Use this to pass "wedding" or "melse"
 }: ServiceProps) => {
   return (
     <div className="py-16 overflow-hidden">
@@ -36,6 +36,7 @@ const ServiceSection = ({
               alt={title}
               className="w-full h-[480px] object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
             />
+            {/* Aesthetic Frame Overlay */}
             <div className="absolute inset-0 border-[1px] border-white/10 m-3 pointer-events-none z-10" />
           </div>
         </div>
@@ -57,21 +58,26 @@ const ServiceSection = ({
             </h2>
           </div>
 
-          {/* 2. Display the description here */}
-          <p className="text-gray-400 tracking-[0.1em] text-sm font-medium max-w-md">
+          <p className="text-gray-400 tracking-[0.1em] text-sm font-medium max-w-md leading-relaxed">
             {description}
           </p>
 
           <div
-            className={`flex w-full ${reverse ? "justify-center md:justify-end" : "justify-center md:justify-start"}`}
+            className={`flex w-full ${
+              reverse
+                ? "justify-center md:justify-end"
+                : "justify-center md:justify-start"
+            }`}
           >
             <Link
-              to={link}
+              to="/gallery" // Always point to the main gallery page
+              state={{ filter: category }} // This is the "secret" message passed to the gallery
               className="group relative inline-flex items-center justify-center border border-malkos-orange text-malkos-orange px-12 py-4 overflow-hidden transition-all duration-300"
             >
               <span className="relative z-10 uppercase text-[10px] tracking-[0.4em] font-bold group-hover:text-white transition-colors duration-300">
-                Explore
+                Explore {title}
               </span>
+              {/* Animated Background Fill */}
               <div className="absolute inset-0 bg-malkos-orange translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             </Link>
           </div>

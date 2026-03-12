@@ -1,5 +1,5 @@
 import { Mail, MapPin, Phone, Send } from "lucide-react";
-import { MALKOS_CONFIG } from "../config";
+import { MALKOS_CONFIG } from "../data/config";
 
 const Footer = () => {
   // Hardcoded Navigation - Matching Navbar IDs

@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
+import GalleryPage from "./pages/GalleryPage";
 
 // Placeholder pages for your routes
 const About = () => (
@@ -22,9 +23,7 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/team" element={<Team />} />
-            <Route path="/contact" element={<Contact />} />
+            <Route path="/gallery" element={<GalleryPage />} />
           </Routes>
         </main>
         <Footer />
