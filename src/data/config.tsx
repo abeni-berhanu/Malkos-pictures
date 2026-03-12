@@ -52,21 +52,21 @@ export const MALKOS_CONFIG = {
   services: [
     {
       title: "Wedding",
-      image: "/gallery/wedding/img-02.jpg",
+      image: "/images/gallery/wedding/img-02.jpg",
       reverse: false,
       description:
         "Professional wedding photography capturing your most precious moments.",
     },
     {
       title: "Melse",
-      image: "/gallery/melse/img-02.jpg",
+      image: "/images/gallery/melse/img-02.jpg",
       reverse: true,
       description:
         "Capturing the rich traditions of the Melse ceremony with artistic precision.",
     },
     {
       title: "Birthday",
-      image: "/gallery/birthday/img-03.jpg",
+      image: "/images/gallery/birthday/img-03.jpg",
       reverse: false,
       description: "Vibrant and joyful birthday photography for all ages.",
     },
@@ -77,28 +77,28 @@ export const MALKOS_CONFIG = {
       id: 1,
       title: "The Royal Union",
       category: "Wedding",
-      image: "/gallery/wedding/img-01.jpg",
+      image: "/images/gallery/wedding/img-01.jpg",
       gridClass: "md:col-span-8 md:row-span-2",
     },
     {
       id: 2,
       title: "Our Golden Heritage",
       category: "Melse",
-      image: "/gallery/melse/img-02.jpg",
+      image: "/images/gallery/melse/img-02.jpg",
       gridClass: "md:col-span-4 md:row-span-1",
     },
     {
       id: 3,
       title: "The Modern Muse",
       category: "Portrait",
-      image: "/gallery/wedding/img-03.jpg",
+      image: "/images/gallery/wedding/img-03.jpg",
       gridClass: "md:col-span-4 md:row-span-1",
     },
     {
       id: 4,
       title: "Memorable Birthdays",
       category: "Birthday",
-      image: "/gallery/birthday/img-01.jpg",
+      image: "/images/gallery/birthday/img-01.jpg",
       gridClass: "md:col-span-12 md:row-span-1",
     },
   ],
@@ -115,29 +115,25 @@ export const MALKOS_CONFIG = {
       id: 1,
       name: "Dagim Zeleke",
       role: "Lead Photographer",
-      image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800",
+      image: "./images/team-members/img-01.png",
     },
     {
       id: 2,
       name: "Bemnet Berhanu",
       role: "Creative Director",
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800",
+      image: "./images/team-members/img-02.png",
     },
     {
       id: 3,
       name: "Biruk Temesgen",
       role: "Editor",
-      image:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800",
+      image: "./images/team-members/img-04.png",
     },
     {
       id: 4,
       name: "Emnet Tesfaye",
       role: "Editor",
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800",
+      image: "./images/team-members/img-03.png",
     },
   ],
 };
