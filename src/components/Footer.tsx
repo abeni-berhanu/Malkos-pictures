@@ -6,8 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 /**
  * Footer Component
- * Handles site-wide navigation links, contact information,
- * and the inquiry form integration via EmailJS.
+ * Correctly integrated with EmailJS using environment variables.
  */
 const Footer = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -22,14 +21,12 @@ const Footer = () => {
     { name: "Gallery", id: "gallery" },
   ];
 
-  // Smooth scroll handler for internal navigation
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       const offset = 80;
       const elementPosition =
         element.getBoundingClientRect().top + window.scrollY;
-
       window.scrollTo({
         top: elementPosition - offset,
         behavior: "smooth",
@@ -37,19 +34,19 @@ const Footer = () => {
     }
   };
 
-  // Form submission handler using EmailJS service
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formRef.current) return;
 
     setStatus("sending");
 
+    // Correct implementation using Vite Environment Variables
     emailjs
       .sendForm(
-        "YOUR_SERVICE_ID",
-        "YOUR_TEMPLATE_ID",
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         formRef.current,
-        "YOUR_PUBLIC_KEY",
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
       )
       .then(() => {
         setStatus("success");
@@ -112,25 +109,25 @@ const Footer = () => {
                     <input
                       required
                       type="text"
-                      name="from_name"
+                      name="name" // Matches {{name}} in your template
                       placeholder="YOUR NAME"
                       className="flex-1 bg-transparent border border-white/10 px-6 py-4 focus:border-malkos-orange outline-none transition-colors text-xs tracking-widest text-white uppercase"
                     />
                     <input
                       required
                       type="email"
-                      name="from_email"
+                      name="email" // Matches {{email}} in your template
                       placeholder="YOUR EMAIL"
-                      className="flex-1 bg-transparent border border-white/10 px-6 py-4 focus:border-malkos-orange outline-none transition-colors text-xs tracking-widest text-white uppercase"
+                      className="flex-1 bg-transparent border border-white/10 px-6 py-4 focus:border-malkos-orange outline-none transition-colors text-xs tracking-widest text-white "
                     />
                   </div>
                   <div className="flex flex-col sm:flex-row gap-0">
                     <input
                       required
-                      name="message"
+                      name="message" // Matches {{message}} in your template
                       type="text"
                       placeholder="YOUR MESSAGE"
-                      className="flex-grow bg-transparent border border-white/10 px-6 py-4 focus:border-malkos-orange outline-none transition-colors text-xs tracking-widest text-white uppercase"
+                      className="flex-grow bg-transparent border border-white/10 px-6 py-4 focus:border-malkos-orange outline-none transition-colors text-xs tracking-widest text-white ss"
                     />
                     <button
                       disabled={status === "sending"}
@@ -142,8 +139,8 @@ const Footer = () => {
                   </div>
                   {status === "error" && (
                     <p className="text-red-500 text-[8px] uppercase tracking-widest mt-2">
-                      Submission failed. Please try again or contact us
-                      directly.
+                      Submission failed. Please check your connection or try
+                      again.
                     </p>
                   )}
                 </form>
@@ -152,7 +149,7 @@ const Footer = () => {
           </AnimatePresence>
         </div>
 
-        {/* Brand & Info Grid */}
+        {/* Info Grid (Brand, Links, Map) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 border-t border-white/5 pt-16">
           <div className="space-y-8">
             <h3 className="text-2xl font-black tracking-tighter italic text-white uppercase">
